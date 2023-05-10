@@ -1938,6 +1938,16 @@ func createDirs(opt Options) error {
 				return y.Wrapf(err, "Error Creating Dir: %q", path)
 			}
 		}
+
+		if opt.SyncWrites {
+			if err := syncDir(path); err != nil {
+				return y.Wrapf(err, "Sync Directory: %q", path)
+			}
+
+			if err := syncDir(filepath.Dir(path)); err != nil {
+				return y.Wrapf(err, "Sync Parent Directory: %q", path)
+			}
+		}
 	}
 	return nil
 }
